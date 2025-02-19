@@ -47,10 +47,11 @@ function createCommand(commandName, commandAlias, callbackFunc)
     newCommand.PrimaryAlias = commandAlias
     newCommand.Parent = textChatService
 
-    commands[commandName] = callbackFunc
+    commands[commandName] = false
 
     newCommand.Triggered:Connect(function()
-        commands[commandName]()
+        commands[commandName] = not commands[commandName]
+        callbackFunc()
     end)
 end
 

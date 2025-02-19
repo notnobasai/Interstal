@@ -1,20 +1,45 @@
-local function notif(title, text, duration)
-    cloneref(game:GetService("StarterGui")):SetCore("SendNotification", {
-        Title = title,
-        Text = text,
-        Duration = duration
-    })
-end
-
+-->> VARIABLES <<--
 local textChatService = cloneref(game:GetService("TextChatService"))
+local tweenService = cloneref(game:GetService("TweenService"))
 local playersService = cloneref(game:FindService("Players"))
+local CoreGui = cloneref(game:GetService("CoreGui"))
 local lplr = playersService.LocalPlayer
 local commandsFolder = Instance.new("Folder", textChatService)
 local commandPrefix = ";"
 
 local commands = {}
+-->> FUNCTIONS <<--
+function notif(title, text, duration)
+    local ScreenGui = Instance.new("ScreenGui", CoreGui)
+    ScreenGui.Name = "G7°£=§`π÷~HS6-86202828-$&#-(2:"
+    ScreenGui.ResetOnSpawn = false
+    ScreenGui.Enabled = true
+    local main = Instance.new("Frame", ScreenGui)
+    main.Name = "Main"
+    main.Size = UDim2.new(0.25, 0, 0.2, 0)
+    main.Position = UDim2.new(1, 0, 0.55, 0)
 
+    local titleLabel = Instance.new("TextLabel", main)
+    titleLabel.TextWrapped = false
+    titleLabel.Size = UDim2.new(1, 0, 1, 0)
+    titleLabel.TextXAlignment = Enum.TextXAlignment.Center
+    titleLabel.TextYAlignment = Enum.TextYAlignment.Top
+    titleLabel.TextScaled = true
 
+    titleLabel.Text = [[
+]] .. title .. "\n" .. text
+
+    local notificationTweenInfo = TweenInfo.new(
+        0.5,
+        Enum.EasingStyle.Linear,
+        Enum.EasingDirection.In,
+        0,
+        false
+    )
+    tweenService:create(main, notificationTweenInfo, { Position = UDim2.new(0.75, 0, 0.55, 0) }):Play()
+    task.wait(duration)
+    tweenService:create(main, notificationTweenInfo, { Position = UDim2.new(1, 0, 0.55, 0) }):Play()
+end
 
 function createCommand(commandName, commandAlias, callbackFunc)
     local newCommand = Instance.new("TextChatCommand", commandsFolder)
@@ -22,11 +47,10 @@ function createCommand(commandName, commandAlias, callbackFunc)
     newCommand.PrimaryAlias = commandAlias
     newCommand.Parent = textChatService
 
-    commands[commandName] = false
+    commands[commandName] = callbackFunc
 
     newCommand.Triggered:Connect(function()
-        commands[commandName] = not commands[commandName]
-        callbackFunc()
+        commands[commandName]()
     end)
 end
 
@@ -42,6 +66,7 @@ lplr.Chatted:Connect(function(message)
     end
 end)
 
+-->> COMMANDS <<--
 createCommand("Prefix", commandPrefix .. "prefix", function(commandArguments)
     if commandArguments and #commandArguments > 0 then
         commandPrefix = commandArguments:match("^%s*(.-)%s*$")
@@ -65,5 +90,4 @@ createCommand("Test", commandPrefix .. "test", function()
     end
 end)
 
-
-notif("Inquire", "Loaded!", 5)
+notif("Inquire", "Inquire Has Loaded!", 5)

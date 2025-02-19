@@ -1,53 +1,70 @@
-local TextChatService = cloneref(game:GetService("TextChatService"))
-local Players = cloneref(game:FindService("Players"))
-local lplr = Players.LocalPlayer
-local CommandsFolder = Instance.new("Folder", TextChatService)
-local prefix = ";"
-local Commands = {}
+local function notif(title, text, duration)
+    cloneref(game:GetService("StarterGui")):SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = duration
+    })
+end
 
-local function CreateCommand(Name, PrimaryAlias, Func)
-    local command = Instance.new("TextChatCommand", CommandsFolder)
-    command.Name = Name
-    command.PrimaryAlias = PrimaryAlias
-    command.Parent = TextChatService
+local textChatService = cloneref(game:GetService("TextChatService"))
+local playersService = cloneref(game:FindService("Players"))
+local lplr = playersService.LocalPlayer
+local commandsFolder = Instance.new("Folder", textChatService)
+local commandPrefix = ";"
+local currentVersion = 0
+local latestVersion = loadstring(game:HttpGet("https://raw.githubusercontent.com/pasted0/Inquire/refs/heads/main/CurrentVersion"))()
 
-    Commands[Name] = false
+if latestVersion > currentVersion then
+    notif("You are using an outdated version. The latest version is: " .. latestVersion)
+end
 
-    command.Triggered:Connect(function()
-        Commands[Name] = not Commands[Name]
-        Func()
+local commands = {}
+
+
+
+function createCommand(commandName, commandAlias, callbackFunc)
+    local newCommand = Instance.new("TextChatCommand", commandsFolder)
+    newCommand.Name = commandName
+    newCommand.PrimaryAlias = commandAlias
+    newCommand.Parent = textChatService
+
+    commands[commandName] = false
+
+    newCommand.Triggered:Connect(function()
+        commands[commandName] = not commands[commandName]
+        callbackFunc()
     end)
 end
 
-lplr.Chatted:Connect(function(msg)
-    if msg:sub(1, #prefix) == prefix then
-        local commandAndArgs = msg:sub(#prefix + 1)
-        local commandName = commandAndArgs:match("^[%w_]+")
-        local arguments = commandAndArgs:sub(#commandName + 2)
+lplr.Chatted:Connect(function(message)
+    if message:sub(1, #commandPrefix) == commandPrefix then
+        local commandAndArguments = message:sub(#commandPrefix + 1)
+        local commandName = commandAndArguments:match("^[%w_]+")
+        local commandArguments = commandAndArguments:sub(#commandName + 2)
         
-        if Commands[commandName] then
-            Commands[commandName](arguments)
+        if commands[commandName] then
+            commands[commandName](commandArguments)
         end
     end
 end)
 
-CreateCommand("Prefix", prefix.."prefix", function(arguments)
-    if arguments and #arguments > 0 then
-        prefix = arguments:match("^%s*(.-)%s*$")
-        print("Prefix changed to: " .. prefix)
+createCommand("Prefix", commandPrefix .. "prefix", function(commandArguments)
+    if commandArguments and #commandArguments > 0 then
+        commandPrefix = commandArguments:match("^%s*(.-)%s*$")
+        print("Prefix changed to: " .. commandPrefix)
     else
         print("No new prefix provided.")
     end
 end)
 
-CreateCommand("Reset", prefix.."reset", function()
-    if Commands["Reset"] then
+createCommand("Reset", commandPrefix .. "reset", function()
+    if commands["Reset"] then
         lplr.Character:BreakJoints()
     end
 end)
 
-CreateCommand("Test", prefix.."test", function()
-    if Commands["Test"] then
+createCommand("Test", commandPrefix .. "test", function()
+    if commands["Test"] then
         lplr.Character.Humanoid.WalkSpeed = 90
     else
         lplr.Character.Humanoid.WalkSpeed = 16

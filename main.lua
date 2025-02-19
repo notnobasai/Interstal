@@ -64,3 +64,6 @@ createCommand("Test", commandPrefix .. "test", function()
         lplr.Character.Humanoid.WalkSpeed = 16
     end
 end)
+
+
+notif("Inquire", "Loaded!", 5)

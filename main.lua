@@ -11,12 +11,6 @@ local playersService = cloneref(game:FindService("Players"))
 local lplr = playersService.LocalPlayer
 local commandsFolder = Instance.new("Folder", textChatService)
 local commandPrefix = ";"
-local currentVersion = 0
-local latestVersion = loadstring(game:HttpGet("https://raw.githubusercontent.com/pasted0/Inquire/refs/heads/main/CurrentVersion"))()
-
-if latestVersion > currentVersion then
-    notif("You are using an outdated version. The latest version is: " .. latestVersion)
-end
 
 local commands = {}
 

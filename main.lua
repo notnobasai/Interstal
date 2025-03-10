@@ -1,3 +1,6 @@
+
+
+
 repeat task.wait() until game:IsLoaded()
 -->> VARIABLES <<--
 local textChatService = cloneref(game:GetService("TextChatService"))
@@ -10,9 +13,8 @@ local prefix = ";"
 
 local commands = {
     ["rejoin"] = function()
-      notif("Rejoin:","Rejoining Server", 3)
-      cloneref(game:GetService("TeleportService")):Teleport(game.PlaceId, lplr)
-
+        notif("Rejoin:", "Rejoining Server", 3)
+        cloneref(game:GetService("TeleportService")):Teleport(game.PlaceId, lplr)
     end,
     
     ["say"] = function(args)
@@ -35,24 +37,26 @@ local commands = {
             notif("Inquire", "Please enter a valid number", 5)
         end
     end,
+
     ["whitelist"] = function(args)
-      table.remove(args, 1)
-      task.wait()
-      local player = playersService:FindFirstChild(args[1])
-      if player then
-        table.insert(whitelist, player.Name)
-        notif("Success!", player.DisplayName.."(@"..player.Name..") Has Been Whitelisted", 10)
-      end
+        table.remove(args, 1)
+        task.wait()
+        local player = playersService:FindFirstChild(args[1])
+        if player then
+            table.insert(whitelist, player.Name)
+            notif("Success!", player.DisplayName .. "(@" .. player.Name .. ") Has Been Whitelisted", 10)
+        end
     end,
     
     ["unwhitelist"] = function(args)
-      table.remove(args, 1)
-      task.wait()
-      if table.find(whitelist, args[1]) then
-        table.remove(whitelist, args[1])
+        table.remove(args, 1)
+        task.wait()
+        local index = table.find(whitelist, args[1])
+        if index then
+            table.remove(whitelist, index)
         else
-          notif("UnWhitelist", args[1] .. " Isnt Whitelisted or Isnt in you're game")
-      end
+            notif("UnWhitelist", args[1] .. " Isn't Whitelisted or Isn't in your game", 5)
+        end
     end,
     
     ["prefix"] = function(args)
@@ -62,6 +66,7 @@ local commands = {
         notif("Prefix:", "Prefix changed to " .. args[1], 6)
     end
 }
+
 task.wait()
 commands["ws"] = commands.speed
 commands["walkspeed"] = commands.speed
@@ -70,6 +75,7 @@ commands["re"] = commands.reset
 commands["wl"] = commands.whitelist
 commands["unwl"] = commands.unwhitelist
 commands["uwl"] = commands.unwhitelist
+
 -->> FUNCTIONS <<--
 function chat(msg)
     if textChatService.ChatInputBarConfiguration.TargetTextChannel then
@@ -79,10 +85,8 @@ function chat(msg)
     end
 end
 
-
-
 function notif(title, text, duration)
-    local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+    local ScreenGui = Instance.new("ScreenGui", CoreGui)
     ScreenGui.Name = "G7Â°Â£=Â§`Ï€Ã·~HS6-86202828-$&#-(2:"
     ScreenGui.ResetOnSpawn = false
     ScreenGui.Enabled = true
@@ -138,16 +142,17 @@ function notif(title, text, duration)
     tweenService:Create(main, notificationTweenInfo, { Position = UDim2.new(1, 0, 0.55, 0) }):Play()
 end
 
-lplr.Chatted:Connect(function(msg)
-    if string.sub(msg, 1, #prefix) == prefix then
-        local args = msg:split(" ")
-        local cmd = string.sub(args[1], #prefix + 1)
-        if commands[cmd:lower()] then
-            commands[cmd:lower()](args)
+for _, v in next, playersService:GetPlayers() do
+    v.Chatted:Connect(function(msg)
+      if table.find(whitelist, v.Name) or v == lplr then 
+        if string.sub(msg, 1, #prefix) == prefix then
+            local args = msg:split(" ")
+            local cmd = string.sub(args[1], #prefix + 1)
+            if commands[cmd] then
+                commands[cmd](args)
+            end
         end
-    end
-end)
-
-
+       end
+    end)
+end
 notif("Inquire", "Inquire Has Loaded!", 5)
-

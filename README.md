@@ -2,7 +2,7 @@
 
 
 Inquire is an Open-Source "Admin Script" similar to Infinite Yield Or Nameless admin
-Inquire is a passion project made by me @pasted0
+and is a passion project made by me @pasted0
 
 
 So What Are You Wating For Start Inquiring Today

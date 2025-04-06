@@ -153,7 +153,7 @@ if connection then connection:Disconnect() end
             local data = httpService.JSONEncode(whitelist)
             writefile("Inquire/Whitslist.json", data)
         end
-    end,
+    end
 
 
 }

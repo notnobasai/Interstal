@@ -1,41 +1,85 @@
-
-
-
-repeat task.wait() until game:IsLoaded()
+repeat task.wait() until game:IsLoaded()  
 -->> VARIABLES <<--
+
+local isfile = isfile or function(file)
+    local suc, res = pcall(function() return readfile(file) end)
+    return suc and res ~= nil and res ~= ''
+end
+
+local isfolder = isfolder or function(folder)
+    local suc, res = pcall(function() return writefile(folder.."/isfolderComp", "print('apple')") end)
+    if res ~= nil and suc == nil then
+        return true
+    else
+        return false
+    end
+end
+
+if not isfolder("Inquire") then
+    makefolder("Inquire")
+end
+
+local httpService = cloneref(game:GetService("HttpService"))
 local textChatService = cloneref(game:GetService("TextChatService"))
 local tweenService = cloneref(game:GetService("TweenService"))
 local playersService = cloneref(game:FindService("Players"))
 local CoreGui = cloneref(game:GetService("CoreGui"))
+local RunService = cloneref(game:GetService("RunService"))
 local lplr = playersService.LocalPlayer
+local humanoid = lplr.Character:WaitForChild("Humanoid")
+local root = lplr.Character:FindFirstChild("HumanoidRootPart")
 local whitelist = {}
 local prefix = ";"
 
+local connection
+local breakloop
 local commands = {
     ["rejoin"] = function()
         notif("Rejoin:", "Rejoining Server", 3)
         cloneref(game:GetService("TeleportService")):Teleport(game.PlaceId, lplr)
     end,
-    
+
     ["say"] = function(args)
         table.remove(args, 1)
         task.wait()
         chat(table.concat(args, " "))
     end,
-    
+
     ["reset"] = function()
         lplr.Character:BreakJoints()
     end,
-    
+
     ["speed"] = function(args)
         table.remove(args, 1)
         task.wait()
         local ws = tonumber(args[1])
         if ws and ws >= 0 then
-            lplr.Character:WaitForChild("Humanoid").WalkSpeed = ws
+            pcall(function() lplr.Character:WaitForChild("Humanoid").WalkSpeed = ws end)
         else
             notif("Inquire", "Please enter a valid number", 5)
         end
+    end,
+
+    ["loopspeed"] = function(args)
+        breakloop = false
+        table.remove(args, 1)
+        task.wait()
+        local ws = tonumber(args[1])
+        if ws and ws <= 0 then
+            notif("loopspeed:", "Please enter a valid number", 5)
+            return
+        end
+        while true do
+            if breakloop == true then
+                break
+            end
+            pcall(function() humanoid.WalkSpeed = ws end)
+            task.wait()
+        end
+    end,
+
+    ["unloopspeed"] = function()
+        breakloop = true
     end,
 
     ["whitelist"] = function(args)
@@ -44,30 +88,81 @@ local commands = {
         local player = playersService:FindFirstChild(args[1])
         if player then
             table.insert(whitelist, player.Name)
-            notif("Success!", player.DisplayName .. "(@" .. player.Name .. ") Has Been Whitelisted", 10)
+            notif("Success!", player.DisplayName.."(@"..player.Name..") Has Been Whitelisted", 10)
         end
     end,
-    
+
     ["unwhitelist"] = function(args)
         table.remove(args, 1)
         task.wait()
-        local index = table.find(whitelist, args[1])
-        if index then
-            table.remove(whitelist, index)
+        if table.find(whitelist, args[1]) then
+            table.remove(whitelist, args[1])
         else
-            notif("UnWhitelist", args[1] .. " Isn't Whitelisted or Isn't in your game", 5)
+            notif("UnWhitelist", args[1] .. " Isn't Whitelisted or Isn't in your game")
         end
     end,
-    
+
     ["prefix"] = function(args)
         table.remove(args, 1)
         task.wait()
+        if args[2] then
+            notif("Prefix:", "You Cannot Use Spaces", 5)
+        end
         prefix = args[1]
         notif("Prefix:", "Prefix changed to " .. args[1], 6)
-    end
+    end,
+
+    ["velocityspeed"] = function(args)
+        table.remove(args, 1)
+        task.wait()
+        local speed = tonumber(args[1])
+print(speed)
+        if not speed then
+            notif("Velocity Speed:", "Please enter a number", 5)
+            return
+        end
+if connection then connection:Disconnect() end
+         connection = RunService.RenderStepped:Connect(function()
+            local md = humanoid.MoveDirection
+            root.AssemblyLinearVelocity = Vector3.new(md.X * speed, root.AssemblyLinearVelocity.Y, md.Z * speed)
+        end)
+    end,
+
+    ["unvelocityspeed"] = function()
+        if connection and not connection ~= nil then
+            connection:Disconnect()
+            notif("VelocitySpeed", "VelocitySpeed Has Been Turned Off", 2.5)
+        end
+    end,
+
+
+    ["joinlogs"] = function()
+        playersService.PlayerAdded:Connect(function(plr)
+            sendSystemMessage("JoinLogs:" .. plr.Name .. " has joined")
+        end)
+    end,
+
+    ["leavelogs"] = function()
+        playersService.PlayerRemoving:Connect(function(plr)
+            sendSystemMessage("LeaveLogs:" .. plr.DisplayName.."(@"..plr.Name..")" .." has left")
+        end)
+    end,
+
+    ["savewhitelist"] = function()
+        if #whitelist >= 1 then
+            local data = httpService.JSONEncode(whitelist)
+            writefile("Inquire/Whitslist.json", data)
+        end
+    end,
+
+
 }
 
 task.wait()
+commands["jl"] = commands.joinlogs
+commands["ll"] = commands.leavelogs
+commands["unvspeed"] = commands.unvelocityspeed
+commands["vspeed"] = commands.velocityspeed
 commands["ws"] = commands.speed
 commands["walkspeed"] = commands.speed
 commands["rj"] = commands.rejoin
@@ -77,6 +172,7 @@ commands["unwl"] = commands.unwhitelist
 commands["uwl"] = commands.unwhitelist
 
 -->> FUNCTIONS <<--
+
 function chat(msg)
     if textChatService.ChatInputBarConfiguration.TargetTextChannel then
         textChatService.ChatInputBarConfiguration.TargetTextChannel:SendAsync(msg)
@@ -85,9 +181,15 @@ function chat(msg)
     end
 end
 
+local function sendSystemMessage(msg)
+    textChatService:WaitForChild("TextChannels"):WaitForChild("RBXSystem"):DisplaySystemMessage(msg)
+end
+
+-->> UI Made By ChatGPT <<--
+
 function notif(title, text, duration)
-    local ScreenGui = Instance.new("ScreenGui", CoreGui)
-    ScreenGui.Name = "G7Â°Â£=Â§`Ï€Ã·~HS6-86202828-$&#-(2:"
+    local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+    ScreenGui.Name = "G7Â°Â£=Â§`Ï€Ã·~HS6-86202828-$&#-(2:" .. tostring(math.random(9e9))
     ScreenGui.ResetOnSpawn = false
     ScreenGui.Enabled = true
 
@@ -142,17 +244,27 @@ function notif(title, text, duration)
     tweenService:Create(main, notificationTweenInfo, { Position = UDim2.new(1, 0, 0.55, 0) }):Play()
 end
 
-for _, v in next, playersService:GetPlayers() do
-    v.Chatted:Connect(function(msg)
-      if table.find(whitelist, v.Name) or v == lplr then 
-        if string.sub(msg, 1, #prefix) == prefix then
-            local args = msg:split(" ")
-            local cmd = string.sub(args[1], #prefix + 1)
-            if commands[cmd] then
-                commands[cmd](args)
-            end
-        end
-       end
-    end)
+function randomPlayer()
+    local randomIndex = math.random(#playersService)
+    local plrIndex = {}
+    for index, plr in next, playersService:GetPlayers() do
+        table.insert(plrIndex, plr)
+    end
+    return plrIndex[randomIndex]
 end
+
+for _, v in next, playersService:GetPlayers() do
+    if table.find(whitelist, v.Name) or v == lplr then
+        v.Chatted:Connect(function(msg)
+            if string.sub(msg, 1, #prefix) == prefix then
+                local args = msg:split(" ")
+                local cmd = string.sub(args[1], #prefix + 1)
+                if commands[cmd] then
+                    commands[cmd](args)
+                end
+            end
+        end)
+    end
+end
+
 notif("Inquire", "Inquire Has Loaded!", 5)

@@ -116,12 +116,11 @@ local commands = {
         table.remove(args, 1)
         task.wait()
         local speed = tonumber(args[1])
-print(speed)
         if not speed then
             notif("Velocity Speed:", "Please enter a number", 5)
             return
         end
-if connection then connection:Disconnect() end
+        if connection then connection:Disconnect() end
          connection = RunService.RenderStepped:Connect(function()
             local md = humanoid.MoveDirection
             root.AssemblyLinearVelocity = Vector3.new(md.X * speed, root.AssemblyLinearVelocity.Y, md.Z * speed)
@@ -189,6 +188,7 @@ end
 
 function notif(title, text, duration)
     local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
+    -- me when baconroaster's executor cant handle "9e9"
     ScreenGui.Name = "G7Â°Â£=Â§`Ï€Ã·~HS6-86202828-$&#-(2:" .. tostring(math.random(10))
     ScreenGui.ResetOnSpawn = false
     ScreenGui.Enabled = true
@@ -254,17 +254,17 @@ function randomPlayer()
 end
 
 for _, v in next, playersService:GetPlayers() do
+  v.Chatted:Connect(function(msg)
     if table.find(whitelist, v.Name) or v == lplr then
-        v.Chatted:Connect(function(msg)
-            if string.sub(msg, 1, #prefix) == prefix then
-                local args = msg:split(" ")
-                local cmd = string.sub(args[1], #prefix + 1)
-                if commands[cmd] then
-                    commands[cmd](args)
-                end
-            end
-        end)
+      if string.sub(msg, 1, #prefix) == prefix then
+        local args = msg:split(" ")
+        local cmd = string.sub(args[1], #prefix + 1)
+        if commands[cmd] then
+          commands[cmd](args)
+        end
+      end
     end
+  end)
 end
 
 notif("Inquire", "Inquire Has Loaded!", 5)

@@ -32,13 +32,6 @@ if not isfolder("Inquire") then
   makefolder("Inquire")
 end
 
-if not isfile("Inquire/init.lua") then
-  getgenv().InstalledStatus = false
-  local init = getFile("Inquire/init.lua")
-  if init and init.Body then
-    writefile("Inquire/init.lua" .. init.Body)
-  end
-end
 
 if not isfile("Inquire/main.lua") then
   getgenv().InstalledStatus = false

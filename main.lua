@@ -1,4 +1,5 @@
-repeat task.wait() until game:IsLoaded()  
+getgenv().EntityLibraryLoaded = getgenv().EntityLibraryLoaded or false
+repeat task.wait() until game:IsLoaded() and getgenv().EntityLibraryLoaded == true
 -->> VARIABLES <<--
 
 local isfile = isfile or function(file)
@@ -13,10 +14,6 @@ local isfolder = isfolder or function(folder)
     else
         return false
     end
-end
-
-if not isfolder("Inquire") then
-    makefolder("Inquire")
 end
 
 local httpService = cloneref(game:GetService("HttpService"))

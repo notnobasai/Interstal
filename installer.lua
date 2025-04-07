@@ -48,8 +48,13 @@ if not isfile("Inquire/main.lua") then
   end
 end
 -->> il add entity lib support later since im lazy :face_tongue: <<--
+if getgenv().InstalledStatus == true then
+  getgenv().InstalledStatus = "installed"
+  task.wait()
+  loadstring(getFile("Inquire/init.lua"))
+end
 
 getgenv().InstalledStatus = "Installer.lua"
 
-loadstring(getFile("Inquire/init.lua"))
+
 

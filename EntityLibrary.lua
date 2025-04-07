@@ -3,25 +3,7 @@ repeat task.wait() until game:IsLoaded()
 local playerService = cloneref(game:FindService("Players"))
 local lplr = playerService.LocalPlayer or playerService:GetPropertyChangedSignal("LocalPlayer"):Wait() and playerService.LocalPlayer
 
-local lplrMeta = {
-    __index = function(_, key)
-        if key == "Root" then
-            return lplr.Character and lplr.Character:WaitForChild("HumanoidRootPart")
-        elseif key == "Humanoid" then
-            return lplr.Character and lplr.Character:FindFirstChildWhichIsA("Humanoid")
-        elseif key == "Head" then
-            return lplr.Character and lplr.Character:FindFirstChild("Head")
-        elseif key == "Torso" then
-            return lplr.Character and (lplr.Character:FindFirstChild("Torso") or lplr.Character:FindFirstChild("UpperTorso"))
-        elseif lplr[key] ~= nil then
-            return lplr[key]
-        else
-            return nil
-        end
-    end
-}
 
-setmetatable(lplrMeta, lplr)
 
 getgenv().EntityLibrary = {
   ["Players"] = {},

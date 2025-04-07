@@ -65,7 +65,7 @@ if not isfile("Inquire/EntityLibrary.lua") then
 end
 task.wait()
 if getgenv().InstalledStatus == true then
-  getgenv().InstalledStatus = "installed"
+  getgenv().InstalledStatus = "Installed"
   task.wait()
   loadstring(readfile("Inquire/init.lua"))()
 else

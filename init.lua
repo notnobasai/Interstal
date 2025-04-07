@@ -1,4 +1,4 @@
-
+print("init")
 getgenv().InstalledStatus = getgenv().InstalledStatus or "Not Tested"
 
 if getgenv().InstalledStatus == "Installed" then

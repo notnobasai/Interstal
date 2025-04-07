@@ -89,4 +89,6 @@ if getgenv().InstalledStatus == true then
   loadstring(game:HttpGet("https://raw.githubusercontent.com/pasted0/Inquire/refs/heads/main/init.lua"))()
 else
   getgenv().InstalledStatus = "Installer.lua"
+task.wait()
+  loadstring(game:HttpGet("https://raw.githubusercontent.com/pasted0/Inquire/refs/heads/main/init.lua"))()
 end

@@ -1,3 +1,4 @@
+print("installer")
 local http_request = syn and syn.request or http and http.request or http_request or httprequest
 getgenv().InstalledStatus = true
 

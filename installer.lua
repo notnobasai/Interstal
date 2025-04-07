@@ -1,10 +1,10 @@
 local http_request = syn and syn.request or http and http.request or http_request or httprequest
 getgenv().InstalledStatus = true
-
+local url = "https://api.github.com/repos/pasted0/%s/contents/%s"
 local function getFile(Repo, FileName)
   local options = {
     Method = 'GET',
-    Url = string.format("https://api.github.com/repos/pasted0/%s/contents/%s", Repo, FileName),
+    Url = string.format(url, Repo, FileName),
     Headers = {
       ["Accept"] = "application/vnd.github.v3.raw"
     }

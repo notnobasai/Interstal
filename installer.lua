@@ -1,11 +1,11 @@
 local http_request = syn and syn.request or http and http.request or http_request or httprequest
 getgenv().InstalledStatus = true
-local url = "https://api.github.com/repos/pasted0/%s/contents/%s"
+
 
 local function getFile(Repo, FileName)
   local options = {
     Method = 'GET',
-    Url = string.format(url, Repo, FileName),
+    Url = "https://api.github.com/repos/pasted0/"..Repo.."/contents/"..FileName,
     Headers = {
       ["Accept"] = "application/vnd.github.v3.raw"
     }
@@ -63,11 +63,11 @@ if not isfile("Inquire/EntityLibrary.lua") then
     writefile("Inquire/EntityLibrary.lua", EntityLibrary.Body)
   end
 end
-
+task.wait()
 if getgenv().InstalledStatus == true then
   getgenv().InstalledStatus = "installed"
   task.wait()
-  loadstring(getFile("Inquire/init.lua").Body)()
+  loadstring(readfile("Inquire/init.lua"))()
 else
   getgenv().InstalledStatus = "Installer.lua"
 end

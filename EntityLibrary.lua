@@ -21,7 +21,7 @@ local lplrMeta = {
     end
 }
 
-setmetatable(lplr, lplrMeta)
+setmetatable(lplrMeta, lplr)
 
 getgenv().EntityLibrary = {
   ["Players"] = {},
@@ -32,7 +32,7 @@ getgenv().EntityLibrary = {
 
 for _, Characters in next, game.Workspace:GetChildren() do
   if Characters:FindFirstChildWhichIsA("Humanoid") and Characters:IsA("Model") then
-    if playerServiceGetPlayerFromCharacter(Characters) ~= nil then
+    if playerService:GetPlayerFromCharacter(Characters) ~= nil then
       table.insert(getgenv().EntityLibrary.Characters, Characters)
     else
       table.insert(getgenv().EntityLibrary.NPCs, Characters)

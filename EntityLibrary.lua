@@ -13,6 +13,7 @@ getgenv().EntityLibrary = {
   ["LocalPlayer"] = lplr and lplr.Character or nil
 }
 
+getgenv().EntityLibraryLoaded = true
 while task.wait(1) do
   for _, Characters in next, game.Workspace:GetChildren() do
     if Characters:FindFirstChildWhichIsA("Humanoid") and Characters:IsA("Model") then

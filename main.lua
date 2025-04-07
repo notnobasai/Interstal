@@ -1,3 +1,4 @@
+print("main")
 getgenv().EntityLibraryLoaded = getgenv().EntityLibraryLoaded or false
 repeat task.wait() until game:IsLoaded()
 while true do 

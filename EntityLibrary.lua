@@ -21,3 +21,4 @@ for _, Characters in next, game.Workspace:GetChildren() do
     end
   end
 end
+end

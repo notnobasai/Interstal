@@ -1,3 +1,4 @@
+print("entitylib")
 repeat task.wait() until game:IsLoaded()
 
 local playerService = cloneref(game:FindService("Players"))

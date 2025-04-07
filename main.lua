@@ -7,13 +7,9 @@ local isfile = isfile or function(file)
     return suc and res ~= nil and res ~= ''
 end
 
-local isfolder = isfolder or function(folder)
-    local suc, res = pcall(function() return writefile(folder.."/isfolderComp", "print('apple')") end)
-    if res ~= nil and suc == nil then
-        return true
-    else
-        return false
-    end
+local function isfolder(folder)
+    local suc, res = pcall(function() return listfiles(folder) end)
+    return suc and type(res) == "table" and #res > 0
 end
 
 local httpService = cloneref(game:GetService("HttpService"))

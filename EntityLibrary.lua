@@ -1,6 +1,7 @@
 repeat task.wait() until game:IsLoaded()
 
 -->> Variables <<--
+
 local playerService = cloneref(game:FindService("Players"))
 local lplr = playerService.LocalPlayer or playerService:GetPropertyChangedSignal("LocalPlayer"):Wait() and playerService.LocalPlayer
 

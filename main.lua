@@ -1,6 +1,10 @@
 print("main")
 getgenv().EntityLibraryLoaded = getgenv().EntityLibraryLoaded or false
-repeat task.wait() until game:IsLoaded() and getgenv().EntityLibraryLoaded == true
+repeat task.wait() until game:IsLoaded()
+while true do
+if EntityLibraryLoaded == true then break end
+task.wait()
+end
 -->> VARIABLES <<--
 
 local isfile = isfile or function(file)

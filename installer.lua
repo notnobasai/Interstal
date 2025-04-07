@@ -34,7 +34,7 @@ end
 
 if not isfile("Inquire/main.lua") then
   getgenv().InstalledStatus = false
-  local main = getFile("Inquire/main.lua")
+  local main = getFile("Inquire", "main.lua")
   if main and main.Body then
     writefile("Inquire/main.lua", main.Body)
   end
@@ -42,7 +42,7 @@ end
 
 if not isfile("Inquire/installer.lua") then
   getgenv().InstalledStatus = false
-  local installer = getFile("Inquire/installer.lua")
+  local installer = getFile("Inquire", "installer.lua")
   if installer and installer.Body then
     writefile("Inquire/installer.lua", installer.Body)
   end
@@ -50,7 +50,7 @@ end
 
 if not isfile("Inquire/init.lua") then
   getgenv().InstalledStatus = false
-  local init = getFile("Inquire/init.lua")
+  local init = getFile("Inquire", "init.lua")
   if init and init.Body then
     writefile("Inquire/init.lua", init.Body)
   end
@@ -58,7 +58,7 @@ end
 
 if not isfile("Inquire/EntityLibrary.lua") then
   getgenv().InstalledStatus = false
-  local EntityLibrary = getFile("Inquire/EntityLibrary.lua")
+  local EntityLibrary = getFile("Inquire", "EntityLibrary.lua")
   if EntityLibrary and EntityLibrary.Body then
     writefile("Inquire/EntityLibrary.lua", EntityLibrary.Body)
   end

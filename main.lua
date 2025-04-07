@@ -21,6 +21,7 @@ end
 
 local httpService = cloneref(game:GetService("HttpService"))
 local textChatService = cloneref(game:GetService("TextChatService"))
+local UserInputService = cloneref(game:GetService("UserInputService"))
 local tweenService = cloneref(game:GetService("TweenService"))
 local playersService = cloneref(game:FindService("Players"))
 local CoreGui = cloneref(game:GetService("CoreGui"))
@@ -33,6 +34,7 @@ local prefix = ";"
 
 local connection
 local breakloop
+local infjumpCallback
 local commands = {
     ["rejoin"] = function()
         notif("Rejoin:", "Rejoining Server", 3)
@@ -146,15 +148,16 @@ local commands = {
             sendSystemMessage("LeaveLogs:" .. plr.DisplayName.."(@"..plr.Name..")" .." has left")
         end)
     end,
-
-    ["savewhitelist"] = function()
-        if #whitelist >= 1 then
-            local data = httpService.JSONEncode(whitelist)
-            writefile("Inquire/Whitslist.json", data)
-        end
+    ["infinitejump"] = function()
+      if infjumpCallback and infjumpCallback ~= nil then infjumpCallback:Disconnect() end
+      infjumpCallback = UserInputService.JumpRequest:Connect(function()
+        humanoid:ChangeState("Jumping")
+      end)
+    end,
+    
+    ["uninfinitejump"] = function()
+      if infjumpCallback ~= nil then infjumpCallback:Disconnect() end
     end
-
-
 }
 
 task.wait()

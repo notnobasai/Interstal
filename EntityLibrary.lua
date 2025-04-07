@@ -1,28 +1,38 @@
 repeat task.wait() until game:IsLoaded()
 
--->> Variables <<--
-
 local playerService = cloneref(game:FindService("Players"))
 local lplr = playerService.LocalPlayer or playerService:GetPropertyChangedSignal("LocalPlayer"):Wait() and playerService.LocalPlayer
 
--->> Entity Library <<--
+local lplrMeta = {
+    __index = function(_, key)
+        if key == "Root" then
+            return lplr.Character and lplr.Character:WaitForChild("HumanoidRootPart")
+        elseif key == "Humanoid" then
+            return lplr.Character and lplr.Character:FindFirstChildWhichIsA("Humanoid")
+        elseif key == "Head" then
+            return lplr.Character and lplr.Character:FindFirstChild("Head")
+        elseif key == "Torso" then
+            return lplr.Character and (lplr.Character:FindFirstChild("Torso") or lplr.Character:FindFirstChild("UpperTorso"))
+        elseif lplr[key] ~= nil then
+            return lplr[key]
+        else
+            return nil
+        end
+    end
+}
+
+setmetatable(lplr, lplrMeta)
+
 getgenv().EntityLibrary = {
   ["Players"] = {},
   ["Characters"] = {},
   ["NPCs"] = {},
-  ["lplr"] = lplr.Character and {
-    ["Root"] = lplr.Character:WaitForChild("HumanoidRootPart"),
-    ["Humanoid"] = lplr.Character:FindFirstChildWhichIsA("Humanoid"),
-    ["Head"] = lplr.Character:FindFirstChild("Head"),
-    ["Torso"] = lplr.Character:FindFirstChild("Torso") or lplr.Character:FindFirstChild("UpperTorso"),
-    ["Character"] = lplr.Character
-  } or {}
+  ["lplr"] = lplr
 }
 
--->> For Loops <<--
 for _, Characters in next, game.Workspace:GetChildren() do
   if Characters:FindFirstChildWhichIsA("Humanoid") and Characters:IsA("Model") then
-    if Characters:GetPlayerFromCharacter() ~= nil then
+    if playerServiceGetPlayerFromCharacter(Characters) ~= nil then
       table.insert(getgenv().EntityLibrary.Characters, Characters)
     else
       table.insert(getgenv().EntityLibrary.NPCs, Characters)

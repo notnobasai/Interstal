@@ -7,7 +7,7 @@ if getgenv().InstalledStatus == "Installed" then
   loadstring(readfile("Inquire/main.lua"))()
 elseif getgenv().InstalledStatus == "Not Tested" then
   loadstring(game:HttpGet("https://raw.githubusercontent.com/pasted0/Inquire/refs/heads/main/installer.lua"))()
-  else
+  elseif InstalledStatus == "installer.lua" then
      task.spawn(function()
        loadstring(readfile("Inquire/EntityLibrary.lua"))
      end)

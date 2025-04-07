@@ -1,9 +1,8 @@
-
 getgenv().EntityLibraryLoaded = getgenv().EntityLibraryLoaded or false
 repeat task.wait() until game:IsLoaded()
-while true do
-if EntityLibraryLoaded == true then break end
-task.wait()
+while true do 
+  if EntityLibraryLoaded == true then break end
+  task.wait()
 end
 -->> VARIABLES <<--
 
@@ -17,6 +16,7 @@ local function isfolder(folder)
     return suc and type(res) == "table" and #res > 0
 end
 
+local entitylib = getgenv().EntityLibrary
 local httpService = cloneref(game:GetService("HttpService"))
 local textChatService = cloneref(game:GetService("TextChatService"))
 local UserInputService = cloneref(game:GetService("UserInputService"))
@@ -25,8 +25,8 @@ local playersService = cloneref(game:FindService("Players"))
 local CoreGui = cloneref(game:GetService("CoreGui"))
 local RunService = cloneref(game:GetService("RunService"))
 local lplr = playersService.LocalPlayer
-local humanoid = lplr.Character:WaitForChild("Humanoid")
-local root = lplr.Character:FindFirstChild("HumanoidRootPart")
+local humanoid = entitylib.Humanoid
+local root = entitylib.HumanoidRootPart
 local whitelist = {}
 local prefix = ";"
 
@@ -133,7 +133,6 @@ local commands = {
             notif("VelocitySpeed", "VelocitySpeed Has Been Turned Off", 2.5)
         end
     end,
-
 
     ["joinlogs"] = function()
         playersService.PlayerAdded:Connect(function(plr)

@@ -172,7 +172,8 @@ commands["re"] = commands.reset
 commands["wl"] = commands.whitelist
 commands["unwl"] = commands.unwhitelist
 commands["uwl"] = commands.unwhitelist
-
+commands["infjump"] = commands.infinitejump
+commands["uninfjump"] = commands.uninfinitejump
 -->> FUNCTIONS <<--
 
 function chat(msg)

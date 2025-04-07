@@ -52,9 +52,11 @@ if getgenv().InstalledStatus == true then
   getgenv().InstalledStatus = "installed"
   task.wait()
   loadstring(getFile("Inquire/init.lua"))
+  else
+    getgenv().InstalledStatus = "Installer.lua"
 end
 
-getgenv().InstalledStatus = "Installer.lua"
+
 
 
 

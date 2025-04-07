@@ -189,7 +189,7 @@ end
 
 function notif(title, text, duration)
     local ScreenGui = Instance.new("ScreenGui", game.CoreGui)
-    ScreenGui.Name = "G7Â°Â£=Â§`Ï€Ã·~HS6-86202828-$&#-(2:" .. tostring(math.random(9e9))
+    ScreenGui.Name = "G7Â°Â£=Â§`Ï€Ã·~HS6-86202828-$&#-(2:" .. tostring(math.random(10))
     ScreenGui.ResetOnSpawn = false
     ScreenGui.Enabled = true
 

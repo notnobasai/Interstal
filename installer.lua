@@ -40,7 +40,35 @@ if not isfile("Inquire/main.lua") then
     writefile("Inquire/main.lua" .. main.Body)
   end
 end
--->> il add entity lib support later since im lazy :face_tongue: <<--
+
+
+if not isfile("Inquire/installer.lua") then
+  getgenv().InstalledStatus = false
+  local installer = getFile("Inquire/installer.lua")
+  if installer and installer.Body then
+    writefile("Inquire/init.lua" .. installer.Body)
+  end
+end
+
+
+if not isfile("Inquire/init.lua") then
+  getgenv().InstalledStatus = false
+  local init = getFile("Inquire/init.lua")
+  if init and init.Body then
+    writefile("Inquire/init.lua" .. init.Body)
+  end
+end
+
+
+if not isfile("Inquire/EntityLibrary.lua") then
+  getgenv().InstalledStatus = false
+  local EntityLibrary = getFile("Inquire/main.lua")
+  if EntityLibrary and EntityLibrary.Body then
+    writefile("Inquire/EntityLibrary.lua" .. EntityLibrary.Body)
+  end
+end
+
+
 if getgenv().InstalledStatus == true then
   getgenv().InstalledStatus = "installed"
   task.wait()
@@ -48,8 +76,3 @@ if getgenv().InstalledStatus == true then
   else
     getgenv().InstalledStatus = "Installer.lua"
 end
-
-
-
-
-

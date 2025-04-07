@@ -11,7 +11,7 @@ getgenv().EntityLibrary = {
   ["NPCs"] = {},
   ["lplr"] = lplr
 }
-
+while task.wait(15) do
 for _, Characters in next, game.Workspace:GetChildren() do
   if Characters:FindFirstChildWhichIsA("Humanoid") and Characters:IsA("Model") then
     if playerService:GetPlayerFromCharacter(Characters) ~= nil then

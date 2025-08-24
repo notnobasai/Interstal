@@ -3,3 +3,4 @@
 </p>
 
 <h1 align="center">Say hello to the first fork of Inquire. Enhance your gameplay using Interstal and be the top!</h1>
+<header align="center">A <b>better</b> version and fork of the admin script Inquire.</header>

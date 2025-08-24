@@ -9,3 +9,5 @@
 
 <t>2. Use Interstal and browse though commands freelessly</t>
 
+<h2>Internal Support</h2>
+Interstal supports each and every type of executor. Although some commands will cease to work and possibly cause errors.

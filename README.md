@@ -3,4 +3,7 @@
 </p>
 
 <h1 align="center">Say hello to the first fork of Inquire. Enhance your gameplay using Interstal and be the top!</h1>
-<header align="center">A <b>better</b> version and fork of the admin script Inquire.</header>
+
+<h2>Usage</h2>
+<t>1. Copy and paste the script onto your roblox executor with injection</t>
+<t>2. Use Interstal and browse though commands freelessly</t>

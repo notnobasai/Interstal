@@ -5,7 +5,7 @@ local http_request = syn and syn.request or http and http.request or http_reques
  local function getFile(Repo, FileName)
    local options = {
      Method = 'GET',
-     Url = "https://api.github.com/repos/pasted0/"..Repo.."/contents/"..FileName,
+     Url = "https://api.github.com/repos/notnobasai/"..Repo.."/contents/"..FileName,
      Headers = {
        ["Accept"] = "application/vnd.github.v3.raw"
      }
@@ -26,67 +26,67 @@ local http_request = syn and syn.request or http and http.request or http_reques
  end
  
  
- if not isfolder("Inquire") then
+ if not isfolder("Interstal") then
    getgenv().InstalledStatus = false
-   makefolder("Inquire")
+   makefolder("Interstal")
  end
  
- if not isfile("Inquire/main.lua") then
+ if not isfile("Interstal/main.lua") then
    getgenv().InstalledStatus = false
-   local main = getFile("Inquire", "main.lua")
+   local main = getFile("Interstal", "main.lua")
    if main and main.Body then
-     writefile("Inquire/main.lua", main.Body)
+     writefile("Interstal/main.lua", main.Body)
    end
    else
-     local main = getFile("Inquire", "main.lua")
-     if main and main.Body and main.Body ~= readfile("Inquire/main.lua") then
-       writefile("Inquire/main.lua", main.Body)
+     local main = getFile("Interstal", "main.lua")
+     if main and main.Body and main.Body ~= readfile("Interstal/main.lua") then
+       writefile("Interstal/main.lua", main.Body)
      end
  end
  
- if not isfile("Inquire/installer.lua") then
+ if not isfile("Interstal/installer.lua") then
    getgenv().InstalledStatus = false
-   local installer = getFile("Inquire", "installer.lua")
+   local installer = getFile("Interstal", "installer.lua")
    if installer and installer.Body then
-     writefile("Inquire/installer.lua", installer.Body)
+     writefile("Interstal/installer.lua", installer.Body)
    end
    else
-     local installer = getFile("Inquire", "installer.lua")
-     if installer and installer.Body and installer.Body ~= readfile("Inquire/installer.lua") then
-       writefile("Inquire/installer.lua", installer.Body)
+     local installer = getFile("Interstal", "installer.lua")
+     if installer and installer.Body and installer.Body ~= readfile("Interstal/installer.lua") then
+       writefile("Interstal/installer.lua", installer.Body)
      end
  end
  
- if not isfile("Inquire/init.lua") then
+ if not isfile("Interstal/init.lua") then
    getgenv().InstalledStatus = false
-   local init = getFile("Inquire", "init.lua")
+   local init = getFile("Interstal", "init.lua")
    if init and init.Body then
-     writefile("Inquire/init.lua", init.Body)
+     writefile("Interstal/init.lua", init.Body)
    end
    else
-     local init = getFile("Inquire", "init.lua")
-     if init and init.Body and init.Body ~= readfile("Inquire/init.lua") then
-       writefile("Inquire/init.lua", init.Body)
+     local init = getFile("Interstal", "init.lua")
+     if init and init.Body and init.Body ~= readfile("Interstal/init.lua") then
+       writefile("Interstal/init.lua", init.Body)
      end
  end
  
- if not isfile("Inquire/EntityLibrary.lua") then
+ if not isfile("Interstal/EntityLibrary.lua") then
    getgenv().InstalledStatus = false
-   local EntityLibrary = getFile("Inquire", "EntityLibrary.lua")
+   local EntityLibrary = getFile("Interstal", "EntityLibrary.lua")
    if EntityLibrary and EntityLibrary.Body then
-     writefile("Inquire/EntityLibrary.lua", EntityLibrary.Body)
+     writefile("Interstal/EntityLibrary.lua", EntityLibrary.Body)
    end
    else
-     local EntityLibrary = getFile("Inquire", "EntityLibrary.lua")
-     if EntityLibrary and EntityLibrary.Body and EntityLibrary.Body ~= readfile("Inquire/EntityLibrary.lua") then
-       writefile("Inquire/EntityLibrary.lua", EntityLibrary.Body)
+     local EntityLibrary = getFile("Interstal", "EntityLibrary.lua")
+     if EntityLibrary and EntityLibrary.Body and EntityLibrary.Body ~= readfile("Interstal/EntityLibrary.lua") then
+       writefile("Interstal/EntityLibrary.lua", EntityLibrary.Body)
      end
  end
  task.wait()
  if getgenv().InstalledStatus == true then
    getgenv().InstalledStatus = "Installed"
    task.wait()
-   loadstring(game:HttpGet("https://raw.githubusercontent.com/pasted0/Inquire/refs/heads/main/init.lua"))()
+   loadstring(game:HttpGet("https://raw.githubusercontent.com/notnobasai/Interstal/refs/heads/main/init.lua"))()
  else
    getgenv().InstalledStatus = "Installer.lua"
  task.wait()
